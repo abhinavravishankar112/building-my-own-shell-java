@@ -4,6 +4,7 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
+        File currentDir = new File(System.getProperty("user.dir"));
 
         while (true) {
             System.out.print("$ ");
@@ -13,7 +14,18 @@ public class Main {
                 break;
 
             } else if (input.equals("pwd")) {
-                System.out.println(System.getProperty("user.dir"));
+                System.out.println(currentDir.getAbsolutePath());
+
+            } else if (input.startsWith("cd ")) {
+
+                String path = input.substring(3);
+                File dir = new File(path);
+
+                if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
+                    currentDir = dir;
+                } else {
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }
 
             } else if (input.startsWith("echo ")) {
                 System.out.println(input.substring(5));
@@ -22,7 +34,7 @@ public class Main {
 
                 String command = input.substring(5);
 
-                if (command.equals("echo") || command.equals("exit") || command.equals("type") || command.equals("pwd")) {
+                if (command.equals("echo") || command.equals("exit") || command.equals("type") || command.equals("pwd") || command.equals("cd")) {
                     System.out.println(command + " is a shell builtin");
                 } else {
 
@@ -66,6 +78,7 @@ public class Main {
 
                 if (executable != null) {
                     ProcessBuilder pb = new ProcessBuilder(parts);
+                    pb.directory(currentDir);
                     pb.inheritIO();
                     Process p = pb.start();
                     p.waitFor();
