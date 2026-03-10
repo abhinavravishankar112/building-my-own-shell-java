@@ -12,6 +12,9 @@ public class Main {
             if (input.equals("exit")) {
                 break;
 
+            } else if (input.equals("pwd")) {
+                System.out.println(System.getProperty("user.dir"));
+
             } else if (input.startsWith("echo ")) {
                 System.out.println(input.substring(5));
 
@@ -19,7 +22,7 @@ public class Main {
 
                 String command = input.substring(5);
 
-                if (command.equals("echo") || command.equals("exit") || command.equals("type")) {
+                if (command.equals("echo") || command.equals("exit") || command.equals("type") || command.equals("pwd")) {
                     System.out.println(command + " is a shell builtin");
                 } else {
 
