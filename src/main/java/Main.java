@@ -21,7 +21,9 @@ public class Main {
                 String path = input.substring(3);
                 File dir;
 
-                if (new File(path).isAbsolute()) {
+                if (path.equals("~")) {
+                    dir = new File(System.getenv("HOME"));
+                } else if (new File(path).isAbsolute()) {
                     dir = new File(path);
                 } else {
                     dir = new File(currentDir, path);
