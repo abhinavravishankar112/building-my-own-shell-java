@@ -19,10 +19,16 @@ public class Main {
             } else if (input.startsWith("cd ")) {
 
                 String path = input.substring(3);
-                File dir = new File(path);
+                File dir;
 
-                if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
-                    currentDir = dir;
+                if (new File(path).isAbsolute()) {
+                    dir = new File(path);
+                } else {
+                    dir = new File(currentDir, path);
+                }
+
+                if (dir.exists() && dir.isDirectory()) {
+                    currentDir = dir.getCanonicalFile();
                 } else {
                     System.out.println("cd: " + path + ": No such file or directory");
                 }
