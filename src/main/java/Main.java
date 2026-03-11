@@ -6,15 +6,20 @@ public class Main {
     public static List<String> parseInput(String input) {
         List<String> args = new ArrayList<>();
         StringBuilder current = new StringBuilder();
-        boolean inQuotes = false;
+
+        boolean inSingle = false;
+        boolean inDouble = false;
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
 
-            if (c == '\'') {
-                inQuotes = !inQuotes;
+            if (c == '\'' && !inDouble) {
+                inSingle = !inSingle;
             }
-            else if (Character.isWhitespace(c) && !inQuotes) {
+            else if (c == '"' && !inSingle) {
+                inDouble = !inDouble;
+            }
+            else if (Character.isWhitespace(c) && !inSingle && !inDouble) {
                 if (current.length() > 0) {
                     args.add(current.toString());
                     current.setLength(0);
