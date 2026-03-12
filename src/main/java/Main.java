@@ -3,10 +3,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class Main {
-
-    // ----------------------------
-    // Parsing (your original)
-    // ----------------------------
     public static List<String> parseInput(String input) {
         List<String> args = new ArrayList<>();
         StringBuilder current = new StringBuilder();
@@ -47,9 +43,6 @@ public class Main {
         return args;
     }
 
-    // ----------------------------
-    // Builtins / history settings
-    // ----------------------------
     private static final List<String> BUILTINS = Arrays.asList("echo", "exit", "type", "pwd", "cd", "history");
 
     private static final int HISTORY_MAX = 2000;
@@ -59,9 +52,6 @@ public class Main {
     private static int historyNavIndex = -1; // -1 means not navigating
     private static String historyNavScratch = ""; // buffer before starting to navigate
 
-    // ----------------------------
-    // Terminal raw mode helpers (macOS/Linux)
-    // ----------------------------
     private static String savedSttyConfig = null;
 
     private static void execStty(String args) throws IOException, InterruptedException {
@@ -95,9 +85,6 @@ public class Main {
         } catch (Exception ignored) {}
     }
 
-    // ----------------------------
-    // Line editor with tab completion + history navigation
-    // ----------------------------
     private static final class ReadResult {
         final String line;
         final boolean eof;
@@ -241,9 +228,6 @@ public class Main {
         return history.get(historyNavIndex);
     }
 
-    // ----------------------------
-    // Completion logic
-    // ----------------------------
     private static String handleTabCompletion(String buffer, File currentDir) {
         // Determine which token is being completed:
         // - if first token -> command completion (builtins + PATH executables)
@@ -453,9 +437,6 @@ public class Main {
         return first;
     }
 
-    // ----------------------------
-    // History persistence
-    // ----------------------------
     private static void loadHistory() {
         File f = new File(HISTORY_FILE);
         if (!f.exists()) return;
@@ -485,9 +466,6 @@ public class Main {
         history.subList(0, toRemove).clear();
     }
 
-    // ----------------------------
-    // Shell main loop
-    // ----------------------------
     public static void main(String[] args) throws Exception {
 
         File currentDir = new File(System.getProperty("user.dir"));
